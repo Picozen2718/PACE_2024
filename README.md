@@ -15,5 +15,5 @@
 
 ## Programming To-Do List:
 1. (All) Write starting program to handle graphs (1hour) (Read DSA textbook L11 to 13)
-2. ## Apply reduction algorithms, Greedy and Branching ideas (2-3hours)
+2. ## Apply reduction algorithms, Greedy and Branching ideas (https://www.geeksforgeeks.org/introduction-and-approximate-solution-for-vertex-cover-problem/) (2-3hours)
 3. *Read/Apply 2 factor Approximation Algorithm (Tentative)
