@@ -16,12 +16,39 @@ void definegraph(vector<int> graph[], int n, int k){
     }
 }
 
-//Greedy implementation
-
 //Single node reduction algorithm
+vector <int> index1(int n, vector <int> degree){
+    vector <int> indexlist;
+    for (int i = 0; i < n; ++i){
+        if (degree[i] == 1){
+            indexlist.push_back(i);
+        }
+    }
+    return(indexlist);
+}
 
-int greedy(int n, vector <int> graph[], vector <int> degree){
-    
+void singlenodered(int n, vector <int> graph [], vector <int> degree, vector <int> vertexcover){
+    vector <int> indexlist = index1(n, degree);
+    for (auto u : indexlist){
+        int x = graph[u][0];
+        vertexcover.push_back(x);
+        graph[u].clear();
+        //remove(graph[].begin(),graph.end(), u);
+        degree[u] = 0;
+        degree[x] = degree[x] - 1;
+    }
+}
+
+int maxindex(int n, vector <int> degree){
+    int index;
+    int x = *max_element(degree.begin(), degree.end());
+    for (int i = 0; i < n; ++i){
+        if (x == degree[i]){
+            index = i;
+            break;
+        }
+    }
+    return(index);
 }
 
 vector <int> assigndegree(int n, vector<int> graph[], vector<int> degree){
@@ -36,13 +63,30 @@ vector <int> assigndegree(int n, vector<int> graph[], vector<int> degree){
     return (degree);
 }
 
+int greedy(int n, vector <int> graph[], vector <int> degree, vector <int> vertexcover){
+    int index = maxindex(n, degree);
+    while ((degree[index] != 0)){
+        vertexcover.push_back(index);
+        for (auto u : graph[index]){
+            remove(graph[u].begin(),graph[u].end(), index);
+            graph[index].clear();
+            degree[u] = degree[u] - 1;
+            degree[index] = 0;
+        }
+        index = maxindex(n, degree);
+    }
+    return (vertexcover.size());
+}
+
 int main(){
     int n, k, cardi;
     scanf("%d %d", &n, &k); //Number of nodes and edges
     vector<int> graph[n]; //Graph of n nodes
     vector<int> degree; //List of degrees of nodes
+    vector<int> vertexcover; //List of nodes in vertex cover
     definegraph(graph, n, k);
     degree = assigndegree(n, graph, degree);
-    cardi = greedy(graph, degree);
-    //for (auto i = degree.begin(); i != degree.end(); ++i) cout << *i << " ";
+    singlenodered(n, graph, degree, vertexcover);
+    cardi = greedy(n, graph, degree, vertexcover);
+    printf("%d", cardi);
 }
